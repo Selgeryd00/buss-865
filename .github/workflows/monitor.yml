@@ -16,6 +16,7 @@ jobs:
       - name: Kontrollera ankomst
         env:
           DEPARTURES_URL: ${{ secrets.DEPARTURES_URL }}
+          TRAFIKLAB_API_KEY: ${{ secrets.BUSS865NYCKEL }}
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
         run: python monitor.py
       - name: Spara bevakningsstatus
