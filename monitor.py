@@ -62,14 +62,15 @@ def main():
         raise RuntimeError("GitHub secret BUSS865NYCKEL saknas")
     area = find_stop(key)
     board = api("/departures/" + urllib.parse.quote(area, safe=""), key)
-    direction_filter = os.getenv("DIRECTION_CONTAINS", "").casefold().strip()
+    direction_filter = "uppsala"
     entries = []
     for dep in board.get("departures", []):
         route = dep.get("route") or {}
         if str(route.get("designation", "")).strip() != LINE:
             continue
         direction = route.get("direction") or (route.get("destination") or {}).get("name") or "okänd riktning"
-        if direction_filter and direction_filter not in direction.casefold():
+        destination = (route.get("destination") or {}).get("name") or ""
+        if direction_filter not in (direction + " " + destination).casefold():
             continue
         when = dep.get("realtime") or dep.get("scheduled")
         if not when:
